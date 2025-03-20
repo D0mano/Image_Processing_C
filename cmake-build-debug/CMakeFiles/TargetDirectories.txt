@@ -1,0 +1,3 @@
+C:/Users/njfot/CLionProjects/Image_Processing_C/cmake-build-debug/CMakeFiles/Image_Processing_C.dir
+C:/Users/njfot/CLionProjects/Image_Processing_C/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/njfot/CLionProjects/Image_Processing_C/cmake-build-debug/CMakeFiles/rebuild_cache.dir
