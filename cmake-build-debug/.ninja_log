@@ -1,0 +1,11 @@
+# ninja log v6
+82	443	7646027995050704	CMakeFiles/Image_Processing_C.dir/bmp8.c.obj	9235b500fbb9efb5
+61	447	7646027994847980	CMakeFiles/Image_Processing_C.dir/main.c.obj	1158c11024c0e4b6
+447	865	7646027998704470	Image_Processing_C.exe	f2f8260e08909b79
+5	116	7646038321492127	CMakeFiles/Image_Processing_C.dir/main.c.obj	1158c11024c0e4b6
+15	133	7646038321575013	CMakeFiles/Image_Processing_C.dir/bmp8.c.obj	9235b500fbb9efb5
+6	109	7646039929219829	CMakeFiles/Image_Processing_C.dir/bmp8.c.obj	9235b500fbb9efb5
+109	236	7646039930255051	Image_Processing_C.exe	f2f8260e08909b79
+6	101	7646044386043996	CMakeFiles/Image_Processing_C.dir/main.c.obj	1158c11024c0e4b6
+15	126	7646044386127732	CMakeFiles/Image_Processing_C.dir/bmp8.c.obj	9235b500fbb9efb5
+126	259	7646044387245456	Image_Processing_C.exe	f2f8260e08909b79
