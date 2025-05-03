@@ -149,30 +149,14 @@ unsigned char * matrix_to_list(int** matrix,int n)
     return list;
 }
 
-//void bmp8_applyFilter(t_bmp8 * img, float ** kernel, int kernelSize)
-//{
-  //  int width = img->width;
-    //int height = img->height;
-    //int n = kernelSize/2;
-    //for (int x = 1; x < width-2; x++)
-//        for (int y = 1; y < height-2; y++)
-//        {
-//            int tmp = 0;
-//            for (int i = -n; i <= n; i++)
-//                for (int j = -n; j <= n; j++)
-//                    tmp += img->data[(x-i)*width + (y-j)]*kernel[i][j];
-//            img->data[x*n+y] = tmp;
-//        }
-//}
 void bmp8_applyFilter(t_bmp8 *img, float **kernel, int kernelSize) {
     int width = img->width;
     int height = img->height;
-    int n = kernelSize / 2; // Décalage pour parcourir autour du pixel central
+    int n = kernelSize / 2;
 
-    // Créer un tableau temporaire pour stocker le résultat
     unsigned char *temp = malloc(img->dataSize * sizeof(unsigned char));
     if (!temp) {
-        printf("Erreur d'allocation mémoire pour le filtre.\n");
+        printf("Error allocating memory for the filter.\n");
         return;
     }
 
@@ -196,7 +180,6 @@ void bmp8_applyFilter(t_bmp8 *img, float **kernel, int kernelSize) {
                 }
             }
 
-            // Clamper la valeur entre 0 et 255
             if (sum < 0) sum = 0;
             if (sum > 255) sum = 255;
 
