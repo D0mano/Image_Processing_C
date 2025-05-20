@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "bmp8.h"
+#include "bmp24.h"
+
 float **createBoxBlurKernel() {
     int size = 3;
     float **kernel = malloc(size * sizeof(float *));
@@ -88,21 +89,24 @@ float **createOutlineKernel() {
 }
 
 
-int main() {
 
-    // Charger une image
-    t_bmp8 *image = bmp8_loadImage("lena_gray.bmp");
-    if (!image) {
+int main() {
+    printf("Starting program...\n");
+
+    t_bmp24* image2 = bmp24_loadImage("..\\flowers_color.bmp");
+    if (!image2) {
+        printf("Failed to load image\n");
         return 1;
     }
-    // Afficher les informations de l'image
-    bmp8_printInfo(image);
-    bmp8_applyFilter(image, createEmbossKernel(), 3);
-    // Sauvegarder l'image sous un autre nom
-    bmp8_saveImage("output.bmp", image);
+    bmp24_printInfo(image2);
+    bmp24_sharpen(image2);
+
+    bmp24_saveImage(image2, "..\\output3.bmp");
 
 
-    bmp8_freeImage(image);
+    // Libérer la mémoire
+    bmp24_free(image2);
 
+    printf("Program completed successfully\n");
     return 0;
 }
