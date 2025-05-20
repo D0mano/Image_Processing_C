@@ -61,7 +61,7 @@ void bmp8_saveImage(const char *filename, t_bmp8 *img) {
     fwrite(img->data, 1, img->dataSize, file);
 
     fclose(file);
-    printf("Image enregistrée sous : %s\n", filename);
+    printf("Image enregistree sous : %s\n", filename);
 }
 
 void bmp8_freeImage(t_bmp8 *img) {
@@ -77,10 +77,10 @@ void bmp8_printInfo(t_bmp8 *img) {
         return;
     }
     printf("Image Info :\n");
-    printf("Width : %u pixels\n", img->width);
-    printf("Height : %u pixels\n", img->height);
-    printf("Color Depth : %u bits\n", img->colorDepth);
-    printf("Data Size : %u bytes\n", img->dataSize);
+    printf("Width : %d pixels\n", img->width);
+    printf("Height : %d pixels\n", img->height);
+    printf("Color Depth : %d bits\n", img->colorDepth);
+    printf("Data Size : %d bytes\n", img->dataSize);
 }
 void bmp8_negative(t_bmp8 * img)
 {

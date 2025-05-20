@@ -65,8 +65,8 @@ t_bmp24 * bmp24_loadImage (const char * filename);
 void bmp24_saveImage (t_bmp24 * img, const char * filename);
 
  /*
- * @brief Set the file cursor to the position position in the file file,
- * then read n elements of size size from the file into the buffer.
+ * @brief Set the file cursor to the position  in the file ,
+ * then read n elements of size  from the file into the buffer.
  * @param position The position from which to read in file.
  * @param buffer The buffer to read the elements into.
  * @param size The size of each element to read.
@@ -74,13 +74,10 @@ void bmp24_saveImage (t_bmp24 * img, const char * filename);
  * @param file The file descriptor to read from.
  * @return void
  */
- void file_rawRead (uint32_t position, void * buffer, uint32_t size, size_t n, FILE * file) {
-   fseek(file, position, SEEK_SET);
-   fread(buffer, size, n, file);
- }
+ void file_rawRead (uint32_t position, void * buffer, uint32_t size, size_t n, FILE * file);
  /*
- * @brief Set the file cursor to the position position in the file file,
- * then write n elements of size size from the buffer into the file.
+ * @brief Set the file cursor to the position  in the file ,
+ * then write n elements of size  from the buffer into the file.
  * @param position The position from which to write in file.
  * @param buffer The buffer to write the elements from.
  * @param size The size of each element to write.
@@ -88,10 +85,7 @@ void bmp24_saveImage (t_bmp24 * img, const char * filename);
  * @param file The file descriptor to write to.
  * @return void
  */
- void file_rawWrite (uint32_t position, void * buffer, uint32_t size, size_t n, FILE * file) {
-   fseek(file, position, SEEK_SET);
-   fwrite(buffer, size, n, file);
- }
+ void file_rawWrite (uint32_t position, void * buffer, uint32_t size, size_t n, FILE * file);
 
 
 void bmp24_readPixelValue (t_bmp24 * image, int x, int y, FILE * file);
@@ -101,6 +95,15 @@ void bmp24_writePixelData (t_bmp24 * image, FILE * file);
 void bmp24_negative (t_bmp24 * img);
 void bmp24_grayscale (t_bmp24 * img);
 void bmp24_brightness (t_bmp24 * img, int value);
+float ** createKernel(int size);
+void freeKernel(float ** kernel,int size);
 t_pixel bmp24_convolution (t_bmp24 * img, int x, int y, float ** kernel, int kernelSize);
+void bmp24_applyFilter(t_bmp24 *img, float **kernel, const int kernelSize);
+void bmp24_boxBlur(t_bmp24 *img);
+void bmp24_gaussianBlur(t_bmp24 *img);
+void bmp24_outline(t_bmp24 *img);
+void bmp24_emboss(t_bmp24 *img);
+void bmp24_sharpen(t_bmp24 *img);
+void bmp24_printInfo(t_bmp24 *img);
 
 #endif //BMP24_H
