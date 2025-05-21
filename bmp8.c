@@ -61,7 +61,7 @@ void bmp8_saveImage(const char *filename, t_bmp8 *img) {
     fwrite(img->data, 1, img->dataSize, file);
 
     fclose(file);
-    printf("Image enregistrée sous : %s\n", filename);
+    printf("Image enregistree sous : %s\n", filename);
 }
 
 void bmp8_freeImage(t_bmp8 *img) {
@@ -77,10 +77,10 @@ void bmp8_printInfo(t_bmp8 *img) {
         return;
     }
     printf("Image Info :\n");
-    printf("Width : %u pixels\n", img->width);
-    printf("Height : %u pixels\n", img->height);
-    printf("Color Depth : %u bits\n", img->colorDepth);
-    printf("Data Size : %u bytes\n", img->dataSize);
+    printf("Width : %d pixels\n", img->width);
+    printf("Height : %d pixels\n", img->height);
+    printf("Color Depth : %d bits\n", img->colorDepth);
+    printf("Data Size : %d bytes\n", img->dataSize);
 }
 void bmp8_negative(t_bmp8 * img)
 {
@@ -149,30 +149,14 @@ unsigned char * matrix_to_list(int** matrix,int n)
     return list;
 }
 
-//void bmp8_applyFilter(t_bmp8 * img, float ** kernel, int kernelSize)
-//{
-  //  int width = img->width;
-    //int height = img->height;
-    //int n = kernelSize/2;
-    //for (int x = 1; x < width-2; x++)
-//        for (int y = 1; y < height-2; y++)
-//        {
-//            int tmp = 0;
-//            for (int i = -n; i <= n; i++)
-//                for (int j = -n; j <= n; j++)
-//                    tmp += img->data[(x-i)*width + (y-j)]*kernel[i][j];
-//            img->data[x*n+y] = tmp;
-//        }
-//}
 void bmp8_applyFilter(t_bmp8 *img, float **kernel, int kernelSize) {
     int width = img->width;
     int height = img->height;
-    int n = kernelSize / 2; // Décalage pour parcourir autour du pixel central
+    int n = kernelSize / 2;
 
-    // Créer un tableau temporaire pour stocker le résultat
     unsigned char *temp = malloc(img->dataSize * sizeof(unsigned char));
     if (!temp) {
-        printf("Erreur d'allocation mémoire pour le filtre.\n");
+        printf("Error allocating memory for the filter.\n");
         return;
     }
 
@@ -196,7 +180,6 @@ void bmp8_applyFilter(t_bmp8 *img, float **kernel, int kernelSize) {
                 }
             }
 
-            // Clamper la valeur entre 0 et 255
             if (sum < 0) sum = 0;
             if (sum > 255) sum = 255;
 

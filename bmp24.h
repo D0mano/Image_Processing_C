@@ -1,10 +1,25 @@
-//
-// Created by njfot on 27/04/2025.
-//
+ // Offsets for the BMP header
+ #define BITMAP_MAGIC 0x00 // offset 0
+ #define BITMAP_SIZE  0x02 // offset 2
+ #define BITMAP_OFFSET 0x0A // offset 10
+ #define BITMAP_WIDTH  0x12 // offset 18
+ #define BITMAP_HEIGHT  0x16 // offset 22
+ #define BITMAP_DEPTH  0x1C // offset 28
+ #define BITMAP_SIZE_RAW  0x22 // offset 34
+ // Magical number for BMP files
+ #define BMP_TYPE 0x4D42 // 'BM' in hexadecimal
+ // Header sizes
+ #define HEADER_SIZE 0x0E // 14 octets
+ #define INFO_SIZE 0x28 // 40 octets
+ // Constant for the color depth
+ #define DEFAULT_DEPTH 0x18 // 24
 #include<stdint.h>
 #include<stdio.h>
+#include<stdlib.h>
+
 #ifndef BMP24_H
 #define BMP24_H
+
 
 typedef struct {
     uint16_t type;
@@ -49,34 +64,29 @@ void bmp24_free (t_bmp24 * img);
 t_bmp24 * bmp24_loadImage (const char * filename);
 void bmp24_saveImage (t_bmp24 * img, const char * filename);
 
-/*
-* @brief Set the file cursor to the position position in the file file,
-* then read n elements of size size from the file into the buffer.
-* @param position The position from which to read in file.
-* @param buffer The buffer to read the elements into.
-* @param size The size of each element to read.
-* @param n The number of elements to read.
-* @param file The file descriptor to read from.
-* @return void
-*/
-void file_rawRead (uint32_t position, void * buffer, uint32_t size, size_t n, FILE * file) {
-    fseek(file, position, SEEK_SET);
-    fread(buffer, size, n, file);
-}
-/*
-* @brief Set the file cursor to the position position in the file file,
-* then write n elements of size size from the buffer into the file.
-* @param position The position from which to write in file.
-* @param buffer The buffer to write the elements from.
-* @param size The size of each element to write.
-* @param n The number of elements to write.
-* @param file The file descriptor to write to.
-* @return void
-*/
-void file_rawWrite (uint32_t position, void * buffer, uint32_t size, size_t n, FILE * file) {
-    fseek(file, position, SEEK_SET);
-    fwrite(buffer, size, n, file);
-}
+ /*
+ * @brief Set the file cursor to the position  in the file ,
+ * then read n elements of size  from the file into the buffer.
+ * @param position The position from which to read in file.
+ * @param buffer The buffer to read the elements into.
+ * @param size The size of each element to read.
+ * @param n The number of elements to read.
+ * @param file The file descriptor to read from.
+ * @return void
+ */
+ void file_rawRead (uint32_t position, void * buffer, uint32_t size, size_t n, FILE * file);
+ /*
+ * @brief Set the file cursor to the position  in the file ,
+ * then write n elements of size  from the buffer into the file.
+ * @param position The position from which to write in file.
+ * @param buffer The buffer to write the elements from.
+ * @param size The size of each element to write.
+ * @param n The number of elements to write.
+ * @param file The file descriptor to write to.
+ * @return void
+ */
+ void file_rawWrite (uint32_t position, void * buffer, uint32_t size, size_t n, FILE * file);
+
 
 void bmp24_readPixelValue (t_bmp24 * image, int x, int y, FILE * file);
 void bmp24_readPixelData (t_bmp24 * image, FILE * file);
@@ -85,6 +95,15 @@ void bmp24_writePixelData (t_bmp24 * image, FILE * file);
 void bmp24_negative (t_bmp24 * img);
 void bmp24_grayscale (t_bmp24 * img);
 void bmp24_brightness (t_bmp24 * img, int value);
+float ** createKernel(int size);
+void freeKernel(float ** kernel,int size);
 t_pixel bmp24_convolution (t_bmp24 * img, int x, int y, float ** kernel, int kernelSize);
+void bmp24_applyFilter(t_bmp24 *img, float **kernel, const int kernelSize);
+void bmp24_boxBlur(t_bmp24 *img);
+void bmp24_gaussianBlur(t_bmp24 *img);
+void bmp24_outline(t_bmp24 *img);
+void bmp24_emboss(t_bmp24 *img);
+void bmp24_sharpen(t_bmp24 *img);
+void bmp24_printInfo(t_bmp24 *img);
 
 #endif //BMP24_H
