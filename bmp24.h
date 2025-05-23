@@ -48,6 +48,13 @@ typedef struct {
     uint8_t blue;
 } t_pixel;
 
+typedef struct
+{
+    float Y;
+    float U;
+    float V;
+}t_pixel_YUV;
+
 typedef struct {
     t_bmp_header header;
     t_bmp_info header_info;
@@ -105,5 +112,12 @@ void bmp24_outline(t_bmp24 *img);
 void bmp24_emboss(t_bmp24 *img);
 void bmp24_sharpen(t_bmp24 *img);
 void bmp24_printInfo(t_bmp24 *img);
+
+t_pixel_YUV ** RGB_to_YUV(t_bmp24 * img);
+unsigned int  min_arr(int* arr,int n,int N);
+unsigned int * bmp24_Computehistogram (t_bmp24 * img);
+unsigned int * bmp24_ComputeCDF (unsigned int * hist);
+void bmp24_equalize(t_bmp24 *img);
+
 
 #endif //BMP24_H

@@ -93,15 +93,17 @@ float **createOutlineKernel() {
 int main() {
     printf("Starting program...\n");
 
-    t_bmp24* image2 = bmp24_loadImage("..\\flowers_color.bmp");
+    t_bmp24* image2 = bmp24_loadImage("..\\sample1 (1).bmp");
     if (!image2) {
         printf("Failed to load image\n");
         return 1;
     }
     bmp24_printInfo(image2);
-    bmp24_sharpen(image2);
 
-    bmp24_saveImage(image2, "..\\output3.bmp");
+    bmp24_equalize(image2);
+
+
+    bmp24_saveImage(image2,"..\\output2.bmp");
 
 
     // Libérer la mémoire
@@ -109,4 +111,7 @@ int main() {
 
     printf("Program completed successfully\n");
     return 0;
+
+
+
 }
