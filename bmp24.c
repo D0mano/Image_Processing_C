@@ -3,13 +3,17 @@
 //
 
 #include "bmp24.h"
+
+#include <math.h>
+
+#include "bmp8.h"
 // Offsets for the BMP header
 #define BITMAP_MAGIC    0x00 // offset 0
 #define BITMAP_SIZE    0x02 // offset 2
 #define BITMAP_OFFSET    0x0A // offset 10
 #define BITMAP_WIDTH    0x12 // offset 18
 #define BITMAP_HEIGHT    0x16 // offset 22
-#define BITMAP_DEPTH    0x1C // offset 28
+#define BITMAP_DEPTH    0x1C // offset  28
 #define BITMAP_SIZE_RAW    0x22 // offset 34
 // Magical number for BMP files
 #define BMP_TYPE    0x4D42 // 'BM' in hexadecimal
@@ -56,11 +60,11 @@ t_bmp24 * bmp24_allocate (int width, int height, int colorDepth){
       }
       return img;
 }
+
 void bmp24_free(t_bmp24 * img){
   bmp24_freeDataPixels(img->data,img->height);
   free(img);
 }
-
 
 void file_rawRead (uint32_t position, void * buffer, uint32_t size, size_t n, FILE * file) {
   fseek(file, position, SEEK_SET);
@@ -93,6 +97,7 @@ void bmp24_readPixelValue(t_bmp24 *image, const int x, const int y, FILE *file)
   }
   */
 }
+
 void bmp24_readPixelData(t_bmp24 *image, FILE *file){
     for (int y = 0; y < image->height; y++) {
       for (int x = 0; x < image->width; x++) {
@@ -100,9 +105,6 @@ void bmp24_readPixelData(t_bmp24 *image, FILE *file){
       }
     }
   }
-
-
-
 
 void bmp24_writePixelValue(t_bmp24 *image, int x, int y, FILE *file) {
     int rowSize = ((image->width * 3 + 3) / 4) * 4;
@@ -115,7 +117,6 @@ void bmp24_writePixelValue(t_bmp24 *image, int x, int y, FILE *file) {
 
     file_rawWrite(position, pixelData, sizeof(uint8_t), 3, file);
   }
-
 
 void bmp24_writePixelData(t_bmp24 *image, FILE *file) {
     for (int y = 0; y < image->height; y++) {
@@ -185,7 +186,6 @@ void bmp24_printInfo(t_bmp24 *img){
     printf("Data Size : %u bytes\n", img->header.size);
   }
 
-
 void bmp24_saveImage(t_bmp24 *img, const char *filename){
     // Vérification de la validité de l'image
     if (!img) {
@@ -227,7 +227,6 @@ void bmp24_negative(t_bmp24 *img) {
   }
 }
 
-// Integration follow-up: Ok - test OK
 void bmp24_grayscale (t_bmp24 * img) {
   for (int i = 0; i < img->height; i++) {
     for (int j = 0; j < img->width; j++) {
@@ -241,7 +240,6 @@ void bmp24_grayscale (t_bmp24 * img) {
   }
 }
 
-// Integration follow-up: Ok - test OK
 void bmp24_brightness (t_bmp24 * img,  int value) {
   for (int i = 0; i < img->height; i++) {
     for (int j = 0; j < img->width; j++) {
@@ -271,6 +269,7 @@ void bmp24_brightness (t_bmp24 * img,  int value) {
     }
   }
 }
+
 float ** createKernel(int size)
 {
   float ** kernel = malloc(size * sizeof(float*));
@@ -288,9 +287,6 @@ void freeKernel(float ** kernel,int size)
   free(kernel);
 }
 
-
-
-// Integration follow-up: Ok - test OK
 t_pixel bmp24_convolution ( t_bmp24 * img,  int x,  int y, float ** kernel,  int kernelSize) {
   int kernelCenter = (kernelSize - 1) / 2;
   float red = 0.0f, green = 0.0f, blue = 0.0f;
@@ -337,8 +333,6 @@ t_pixel bmp24_convolution ( t_bmp24 * img,  int x,  int y, float ** kernel,  int
   return finalPixel;
 }
 
-
-// Integration follow-up: Ok - test OK
 void bmp24_applyFilter(t_bmp24 *img, float **kernel, const int kernelSize) {
   t_pixel** filterData = bmp24_allocateDataPixels(img->width, img->height);
   int kernelCenter = (kernelSize - 1) / 2;
@@ -353,9 +347,6 @@ void bmp24_applyFilter(t_bmp24 *img, float **kernel, const int kernelSize) {
   img->data = filterData;
 }
 
-
-
-// Integration follow-up: Ok - test OK
 void bmp24_boxBlur(t_bmp24 *img) {
   int kernelSize = 3;
   float **box_blur = createKernel(kernelSize);
@@ -371,7 +362,6 @@ void bmp24_boxBlur(t_bmp24 *img) {
   freeKernel(box_blur, kernelSize);
 }
 
-// Integration follow-up: Ok - test OK
 void bmp24_gaussianBlur(t_bmp24 *img) {
   int kernelSize = 3;
   float **gaussian_blur = createKernel(kernelSize);
@@ -390,7 +380,6 @@ void bmp24_gaussianBlur(t_bmp24 *img) {
   freeKernel(gaussian_blur, kernelSize);
 }
 
-// Integration follow-up: Ok - test OK
 void bmp24_outline(t_bmp24 *img) {
   int kernelSize = 3;
   float **outline = createKernel(kernelSize);
@@ -410,7 +399,6 @@ void bmp24_outline(t_bmp24 *img) {
   freeKernel(outline, kernelSize);
 }
 
-// Integration follow-up: Ok - test OK
 void bmp24_emboss(t_bmp24 *img) {
   int kernelSize = 3;
   float **emboss = createKernel(kernelSize);
@@ -430,7 +418,6 @@ void bmp24_emboss(t_bmp24 *img) {
   freeKernel(emboss, kernelSize);
 }
 
-// Integration follow-up: Ok -  test OK
 void bmp24_sharpen(t_bmp24 *img) {
   int kernelSize = 3;
   float **sharpen = createKernel(kernelSize);
@@ -448,6 +435,102 @@ void bmp24_sharpen(t_bmp24 *img) {
   bmp24_applyFilter(img, sharpen, kernelSize);
 
   freeKernel(sharpen, kernelSize);
+}
+
+t_pixel_YUV ** RGB_to_YUV(t_bmp24 * img)
+{
+  t_pixel_YUV ** YUV = (t_pixel_YUV**)malloc(img->height * sizeof(t_pixel_YUV*));
+  for (int i = 0; i < img->height; i++)
+    YUV[i] = (t_pixel_YUV *)malloc(img->width * sizeof(t_pixel_YUV));
+
+  for (int i = 0; i < img->height; i++)
+    for (int j = 0; j < img->width; j++)
+    {
+      YUV[i][j].Y = 0.299 * img->data[i][j].red + 0.587 * img->data[i][j].green + 0.114 * img->data[i][j].blue;
+      YUV[i][j].U = -0.14713 * img->data[i][j].red - 0.28886* img->data[i][j].green+ 0.436 * img->data[i][j].blue;
+      YUV[i][j].V = 0.625 * img->data[i][j].red - 0.51419 * img->data[i][j].green - 0.10001 * img->data[i][j].blue;
+    }
+  return YUV;
+
+
+}
+
+unsigned int * bmp24_computeHistogram(t_bmp24 * img)
+{
+  unsigned int * hist = calloc(256 ,sizeof(unsigned int));
+  t_pixel_YUV ** YUV = RGB_to_YUV(img);
+  for (int i = 0; i < img->height ; i++)
+    for (int j = 0; j < img->width; j++)
+    {
+      hist[(int)round(YUV[i][j].Y)]++;
+    }
+  return hist;
+}
+
+unsigned int  min_arr24(int* arr,int n,int N)
+{
+  unsigned int min = N;
+  for (int i = 1; i < n; i++)
+  {
+    if (arr[i] < min && arr[i] != 0)
+      min = arr[i];
+  }
+  return min;
+}
+
+unsigned int * bmp24_computeCDF(unsigned int * hist)
+{
+  unsigned int * cdf = malloc(256 * sizeof(unsigned int));
+  unsigned int sum = 0;
+  for (int i = 0; i < 256; i++){
+    sum += hist[i];
+    cdf[i] = sum;
+  }
+  unsigned int N = cdf[255];
+  unsigned int cdf_min = min_arr(cdf,256,N);
+  unsigned int * hist_eq = malloc(256 * sizeof(unsigned int));
+  for (int i = 0; i < 255; i++)
+  {
+    hist_eq[i] = round((float)(cdf[i] - cdf_min) / (N - cdf_min) * 255);
+  }
+  return hist_eq;
+}
+
+void bmp24_equalize(t_bmp24 *img){
+  unsigned * hist = bmp24_computeHistogram(img);
+  unsigned int * hist_eq = bmp24_computeCDF(hist);
+  t_pixel_YUV ** YUV = RGB_to_YUV(img);
+  for (int y = 0; y < img->height; y++) {
+    for (int x = 0; x < img->width; x++) {
+      int y_val = (int)round(YUV[y][x].Y);
+      if (y_val < 0) y_val = 0;
+      if (y_val > 255) y_val = 255;
+      float new_Y = (float)hist_eq[y_val];
+
+      float U = YUV[y][x].U;
+      float V = YUV[y][x].V;
+
+      int r = round(new_Y + 1.13983 * V);
+      int g = round(new_Y - 0.39465 * U - 0.58060 * V);
+      int b = round(new_Y + 2.03211 * U);
+
+      // Clamp
+      if (r < 0) r = 0; if (r > 255) r = 255;
+      if (g < 0) g = 0; if (g > 255) g = 255;
+      if (b < 0) b = 0; if (b > 255) b = 255;
+
+      img->data[y][x].red = (uint8_t)r;
+      img->data[y][x].green = (uint8_t)g;
+      img->data[y][x].blue = (uint8_t)b;
+    }
+  }
+
+
+  free(hist_eq);
+  free(hist);
+  for (int i = 0; i < img->height; i++) free(YUV[i]);
+  free(YUV);
+
 }
 
 

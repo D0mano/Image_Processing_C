@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "bmp8.h"
 
 t_bmp8 *bmp8_loadImage(const char *filename) {
@@ -22,7 +23,7 @@ t_bmp8 *bmp8_loadImage(const char *filename) {
     img->width = *(unsigned int *)&img->header[18];
     img->height = *(unsigned int *)&img->header[22];
     img->colorDepth = *(unsigned int *)&img->header[28];
-    img->dataSize = *(unsigned int *)&img->header[34];
+    img->dataSize = img ->height * img->width;
 
     if (img->colorDepth != 8) {
         printf("Erreur : L'image n'est pas en niveaux de gris 8 bits\n");
@@ -51,7 +52,7 @@ t_bmp8 *bmp8_loadImage(const char *filename) {
 void bmp8_saveImage(const char *filename, t_bmp8 *img) {
     FILE *file = fopen(filename, "wb");
     if (!file) {
-        printf("Erreur : Impossible d'écrire dans le fichier %s\n", filename);
+        printf("Erreur : Impossible d'ecrire dans le fichier %s\n", filename);
         return;
     }
 
@@ -82,6 +83,7 @@ void bmp8_printInfo(t_bmp8 *img) {
     printf("Color Depth : %d bits\n", img->colorDepth);
     printf("Data Size : %d bytes\n", img->dataSize);
 }
+
 void bmp8_negative(t_bmp8 * img)
 {
     for (int i = 0; i < img->width * img->height; i++)
@@ -108,6 +110,7 @@ void bmp8_brightness(t_bmp8 * img, int value)
         }
     }
 }
+
 void bmp8_threshold(t_bmp8 * img, int threshold)
 {
     for (int i = 0; i < img->width * img->height; i++)
@@ -189,4 +192,56 @@ void bmp8_applyFilter(t_bmp8 *img, float **kernel, int kernelSize) {
     }
 
     free(temp); // Libérer le tableau temporaire
+}
+
+unsigned int * bmp8_computeHistogram(t_bmp8 * img)
+{
+    unsigned int * hist = (unsigned int *)calloc(256,sizeof(unsigned int));
+    for (int i = 0; i < img->width * img->height; i++)
+        hist[img->data[i]] ++;
+
+    return hist;
+}
+
+unsigned int  min_arr(int* arr,int n,int N)
+{
+    unsigned int min = N;
+    for (int i = 1; i < n; i++)
+    {
+        if (arr[i] < min && arr[i] != 0)
+            min = arr[i];
+    }
+    return min;
+}
+
+unsigned int * bmp8_computeCDF(unsigned int * hist)
+{
+    unsigned int * cdf = malloc(256*sizeof(unsigned int));
+    unsigned int sum = 0;
+    int N;
+    for (int i = 0; i < 256; i++)
+    {
+        sum += hist[i];
+        cdf[i] = sum;
+
+    }
+    N = cdf[255];
+    unsigned int cdf_min = min_arr(cdf,256,N);
+    unsigned int * hist_eq = malloc(256 * sizeof(unsigned int));
+    for (int i = 0; i < 256; i++)
+    {
+        hist_eq[i] = round((float)(cdf[i] - cdf_min) / (N - cdf_min) * 255);
+    }
+    free(hist);
+    return hist_eq;
+}
+
+void bmp8_equalize(t_bmp8 * img)
+{
+    unsigned int * hist = bmp8_computeHistogram(img);
+    unsigned int * hist_eq = bmp8_computeCDF(hist);
+    for (int i = 0; i < img->dataSize; i++)
+        img->data[i] = hist_eq[img->data[i]];
+    free(hist);
+    free(hist_eq);
 }
