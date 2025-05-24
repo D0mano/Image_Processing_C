@@ -658,6 +658,6 @@ void bmp24_equalize(t_bmp24 *img) {
 
 
 
-}
+
 
 
