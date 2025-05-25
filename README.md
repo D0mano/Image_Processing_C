@@ -66,6 +66,10 @@ d0mano-image_processing_c/
 * The project is built using C standard library functions only.
 * Image data is manipulated using raw byte and structure access based on BMP header specifications.
 
+## 🐞 Known Issues
+Inconsistent `printf` output after `scanf` calls.  
+During the use of the user interface, we observed that some `printf` statements may not appear immediately after `scanf`inputs.  
+This issue is related to the way standard input/output buffering works in C. Specifically, the output buffer may not flush as expected after a `scanf`, causing some printed messages to be delayed or skipped on screen.
 ---
 
 Thank you for reviewing our work!
