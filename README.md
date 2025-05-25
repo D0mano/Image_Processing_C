@@ -37,6 +37,14 @@ The project was completed as part of the "Algorithmic and Data Structures 1" cou
 * Equalize grayscale images
 * Equalize color images by converting to YUV, adjusting the Y (luminance) component, and converting back to RGB
 
+### Bonus 
+* The possibilities to make a mirrored image on the x and y axis 
+* New filters :
+  * Sepia tone
+  * Sobel x
+  * Sobel y
+  * Motion blur
+
 ## 📁 Project Structure
 
 ```

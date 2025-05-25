@@ -7,90 +7,6 @@
 #include "bmp24.h"
 #define PATH "..//"
 
-float **createBoxBlurKernel() {
-    int size = 3;
-    float **kernel = malloc(size * sizeof(float *));
-    if (!kernel) return NULL;
-
-    for (int i = 0; i < size; i++) {
-        kernel[i] = malloc(size * sizeof(float));
-        if (!kernel[i]) return NULL;
-        for (int j = 0; j < size; j++) {
-            kernel[i][j] = 1.0f / 9.0f;
-        }
-    }
-    return kernel;
-}
-float **createGaussianBlurKernel() {
-    int size = 3;
-    float values[3][3] = {
-        {1, 2, 1},
-        {2, 4, 2},
-        {1, 2, 1}
-    };
-
-    float **kernel = malloc(size * sizeof(float *));
-    for (int i = 0; i < size; i++) {
-        kernel[i] = malloc(size * sizeof(float));
-        for (int j = 0; j < size; j++) {
-            kernel[i][j] = values[i][j] / 16.0f;
-        }
-    }
-    return kernel;
-}
-float **createSharpenKernel() {
-    int size = 3;
-    float values[3][3] = {
-        { 0, -1,  0},
-        {-1,  5, -1},
-        { 0, -1,  0}
-    };
-
-    float **kernel = malloc(size * sizeof(float *));
-    for (int i = 0; i < size; i++) {
-        kernel[i] = malloc(size * sizeof(float));
-        for (int j = 0; j < size; j++) {
-            kernel[i][j] = values[i][j];
-        }
-    }
-    return kernel;
-}
-float **createEmbossKernel() {
-    int size = 3;
-    float values[3][3] = {
-        {-2, -1, 0},
-        {-1,  1, 1},
-        { 0,  1, 2}
-    };
-
-    float **kernel = malloc(size * sizeof(float *));
-    for (int i = 0; i < size; i++) {
-        kernel[i] = malloc(size * sizeof(float));
-        for (int j = 0; j < size; j++) {
-            kernel[i][j] = values[i][j];
-        }
-    }
-    return kernel;
-}
-float **createOutlineKernel() {
-    int size = 3;
-    float values[3][3] = {
-        {-1, -1, -1},
-        {-1,  8, -1},
-        {-1, -1, -1}
-    };
-
-    float **kernel = malloc(size * sizeof(float *));
-    for (int i = 0; i < size; i++) {
-        kernel[i] = malloc(size * sizeof(float));
-        for (int j = 0; j < size; j++) {
-            kernel[i][j] = values[i][j];
-        }
-    }
-    return kernel;
-}
-
-
 
 
 
@@ -206,6 +122,9 @@ void displayFilters24Menu() {
     printf("|  4. Emboss                             |\n");
     printf("|  5. Outline                            |\n");
     printf("|  6. Sepia tone                         |\n");
+    printf("|  7. Sobel X                            |\n");
+    printf("|  8. Sobel Y                            |\n");
+    printf("|  9. Motion blur                        |\n");
     printf("|  0. Back                               |\n");
     printf("*========================================*\n");
     printf("Your choice: ");
@@ -657,6 +576,23 @@ void applyFiltersBMP24(t_bmp24* img) {
             case 6: // Sepia tone
                 bmp24_sepia(img);
                 printf("Sepia tone effect applied!\n");
+                pauseScreen();
+                break;
+            case 7:
+                bmp24_sobelX(img);
+                printf("SobelX applied!\n");
+                pauseScreen();
+                break;
+
+            case 8 :
+                bmp24_sobelY(img);
+                printf("SobelY applied!\n");
+                pauseScreen();
+                break;
+
+            case 9:
+                bmp24_motionBlur(img);
+                printf("Motion blur applied!\n");
                 pauseScreen();
                 break;
 

@@ -561,6 +561,66 @@ void bmp24_sharpen(t_bmp24 *img) {
     freeKernel(sharpen, kernelSize);
 }
 
+void bmp24_sobelX(t_bmp24 *img) {
+    int kernelSize = 3;
+    float **sobelX = createKernel(kernelSize);
+
+    // Sobel x kernel weights (center weighted)
+    float values_sobelX[3][3] = {
+        {-1, 0, 1},
+        {-2, 0, 2},
+        {-1, 0, 1}
+    };
+
+    // Copy values to kernel
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            sobelX[i][j] = values_sobelX[i][j];
+
+    bmp24_applyFilter(img, sobelX, kernelSize);
+    freeKernel(sobelX, kernelSize);
+}
+
+void bmp24_sobelY(t_bmp24 *img) {
+    int kernelSize = 3;
+    float **sobelY = createKernel(kernelSize);
+
+    // Sobel y kernel weights (center weighted)
+    float values_sobelY[3][3] = {
+        {-1,-2,-1},
+        {0 , 0, 0},
+        {1 , 2, 1}
+    };
+
+    // Copy values to kernel
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            sobelY[i][j] = values_sobelY[i][j];
+
+    bmp24_applyFilter(img, sobelY, kernelSize);
+    freeKernel(sobelY, kernelSize);
+}
+
+void bmp24_motionBlur(t_bmp24 *img) {
+    int kernelSize = 3;
+    float **motion = createKernel(kernelSize);
+
+    // motion blur kernel weights (center weighted)
+    float values_motion[3][3] = {
+        {1/3.0f, 0, 0},
+        {0 ,1/3.0f, 0},
+        {0 , 0,1/3.0f}
+    };
+
+    // Copy values to kernel
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            motion[i][j] = values_motion[i][j];
+
+    bmp24_applyFilter(img, motion, kernelSize);
+    freeKernel(motion, kernelSize);
+}
+
 void bmp24_sepia(t_bmp24 *img)
 {
 

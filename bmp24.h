@@ -410,6 +410,34 @@ void bmp24_sharpen(t_bmp24 *img);
  */
 void bmp24_sepia(t_bmp24 *img);
 
+/**
+ * @brief Apply Sobel X filter to image
+ * @param img Pointer to image to modify
+ *
+ * Applies the Sobel operator in the horizontal direction to detect vertical edges.
+ * Highlights regions where horizontal intensity changes are most significant.
+ */
+void bmp24_sobelX(t_bmp24 *img);
+
+/**
+ * @brief Apply Sobel Y filter to image
+ * @param img Pointer to image to modify
+ *
+ * Applies the Sobel operator in the vertical direction to detect horizontal edges.
+ * Highlights regions where vertical intensity changes are most significant.
+ */
+void bmp24_sobelY(t_bmp24 *img);
+
+/**
+ * @brief Apply motion blur filter to image
+ * @param img Pointer to image to modify
+ *
+ * Applies a motion blur effect to simulate movement by blurring pixels
+ * along a diagonal direction. Useful for adding a dynamic visual impression.
+ */
+void bmp24_motionBlur(t_bmp24 *img);
+
+
 
 /* ============================================================================
  * COLOR SPACE CONVERSION AND HISTOGRAM FUNCTIONS
