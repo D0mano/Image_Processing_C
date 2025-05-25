@@ -150,9 +150,11 @@ void displayBMP8Menu() {
     printf("|  4. Negative                           |\n");
     printf("|  5. Change Brightness                  |\n");
     printf("|  6. Threshold                          |\n");
-    printf("|  7. Apply filters                      |\n");
-    printf("|  8. Histogram equalization             |\n");
-    printf("|  9. Compute histogram                  |\n");
+    printf("|  7. Horizontal flip                    |\n");
+    printf("|  8. Vertical flip                      |\n");
+    printf("|  9. Apply filters                      |\n");
+    printf("| 10. Histogram equalization             |\n");
+    printf("| 11. Compute histogram                  |\n");
     printf("|  0. Back to main menu                  |\n");
     printf("*========================================*\n");
     printf("Your choice: ");
@@ -169,8 +171,10 @@ void displayBMP24Menu() {
     printf("|  4. Negative                           |\n");
     printf("|  5. Grayscale                          |\n");
     printf("|  6. Change Brightness                  |\n");
-    printf("|  7. Apply filters                      |\n");
-    printf("|  8. Histogram equalization             |\n");
+    printf("|  7. Flip horizontally                  |\n");
+    printf("|  8. Flip vertically                    |\n");
+    printf("|  9. Apply filters                      |\n");
+    printf("| 10. Histogram equalization             |\n");
     printf("|  0. Back to main menu                  |\n");
     printf("*========================================*\n");
     printf("Your choice: ");
@@ -201,6 +205,7 @@ void displayFilters24Menu() {
     printf("|  3. Sharpen                            |\n");
     printf("|  4. Emboss                             |\n");
     printf("|  5. Outline                            |\n");
+    printf("|  6. Sepia tone                         |\n");
     printf("|  0. Back                               |\n");
     printf("*========================================*\n");
     printf("Your choice: ");
@@ -305,8 +310,29 @@ void handleBMP8() {
                 printf("Threshold applied with value %d!\n", valeur);
                 pauseScreen();
                 break;
-
-            case 7: // Filters
+            case 7: // Horizontal flip
+                if (!imageBMP8)
+                {
+                    printf("No image loaded!\n");
+                    pauseScreen();
+                    break;
+                }
+                bmp8_horizontalFlip(imageBMP8);
+                printf("Horizontal Flip applied");
+                pauseScreen();
+                break;
+            case 8: // Vertical flip
+                if (!imageBMP8)
+                {
+                    printf("No image loaded!\n");
+                    pauseScreen();
+                    break;
+                }
+                bmp8_verticalFlip(imageBMP8);
+                printf("Vertical Flip applied");
+                pauseScreen();
+                break;
+            case 9: // Filters
                 if (!imageBMP8) {
                     printf("No image loaded!\n");
                     pauseScreen();
@@ -315,7 +341,7 @@ void handleBMP8() {
                 }
                 break;
 
-            case 8: // Equalization
+            case 10: // Equalization
                 if (!imageBMP8) {
                     printf("No image loaded!\n");
                 } else {
@@ -325,7 +351,7 @@ void handleBMP8() {
                 pauseScreen();
                 break;
 
-            case 9: // Histogram
+            case 11: // Histogram
                 if (!imageBMP8) {
                     printf("No image loaded!\n");
                 } else {
@@ -535,8 +561,31 @@ void handleBMP24() {
                 printf("Brightness adjusted by %d units!\n", valeur);
                 pauseScreen();
                 break;
+            case 7: // Horizontal flip
+                if (!imageBMP24)
+                {
+                    printf("No image loaded!\n");
+                    pauseScreen();
+                    break;
+                }
+                bmp24_horizontalFlip(imageBMP24);
+                printf("Horizontal flip applied successfully");
+                pauseScreen();
+                break;
+        case 8: // Vertical flip
+            if (!imageBMP24)
+            {
+                printf("No image loaded!\n");
+                pauseScreen();
+                break;
+            }
+            bmp24_verticalFlip(imageBMP24);
+            printf("Vertical flip applied successfully");
+            pauseScreen();
+            break;
 
-            case 7: // Filters
+
+            case 9: // Filters
                 if (!imageBMP24) {
                     printf("No image loaded!\n");
                     pauseScreen();
@@ -545,7 +594,7 @@ void handleBMP24() {
                 }
                 break;
 
-            case 8: // Equalization
+            case 10: // Equalization
                 if (!imageBMP24) {
                     printf("No image loaded!\n");
                 } else {
@@ -602,6 +651,12 @@ void applyFiltersBMP24(t_bmp24* img) {
             case 5: // Outline
                 bmp24_outline(img);
                 printf("Outline detection applied!\n");
+                pauseScreen();
+                break;
+
+            case 6: // Sepia tone
+                bmp24_sepia(img);
+                printf("Sepia tone effect applied!\n");
                 pauseScreen();
                 break;
 
