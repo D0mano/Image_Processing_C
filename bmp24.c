@@ -353,6 +353,36 @@ void bmp24_brightness (t_bmp24 * img,  int value) {
     }
 }
 
+void bmp24_horizontalFlip(t_bmp24 *img)
+{
+    t_pixel ** temp = bmp24_allocateDataPixels(img->width, img->height);
+    for (int i = 0; i < img->height; i++)
+        for (int j = 0; j < img->width; j++)
+            temp[i][j] = img->data[i][j];
+    for (int i = 0; i < img->height; i++)
+        for (int j = 0; j < img->width; j++)
+        {
+            img->data[i][j] = temp[img->height - i - 1][j];
+        }
+    for (int i = 0; i < img->height; i++) free(temp[i]);
+    free(temp);
+}
+
+void bmp24_verticalFlip(t_bmp24 *img)
+{
+    t_pixel ** temp = bmp24_allocateDataPixels(img->width, img->height);
+    for (int i = 0; i < img->height; i++)
+        for (int j = 0; j < img->width; j++)
+            temp[i][j] = img->data[i][j];
+    for (int i = 0; i < img->height; i++)
+        for (int j = 0; j < img->width; j++)
+        {
+            img->data[i][j] = temp[i][img->width - j -1];
+        }
+    for (int i = 0; i < img->height; i++) free(temp[i]);
+    free(temp);
+}
+
 // ========================================
 // CONVOLUTION AND FILTERING FUNCTIONS
 // ========================================
@@ -529,6 +559,28 @@ void bmp24_sharpen(t_bmp24 *img) {
 
     bmp24_applyFilter(img, sharpen, kernelSize);
     freeKernel(sharpen, kernelSize);
+}
+
+void bmp24_sepia(t_bmp24 *img)
+{
+
+    for (int i = 0; i < img->height; i++) {
+        for (int j = 0; j < img->width; j++) {
+            // Conversion for RGB to sepia scale
+            unsigned int R = (int)round(img->data[i][j].red * 0.393 + img->data[i][j].green * 0.769 + img->data[i][j].blue * 0.189);
+            unsigned int G = (int)round(img->data[i][j].red * 0.349 + img->data[i][j].green * 0.686 + img->data[i][j].blue * 0.168);
+            unsigned int B = (int)round(img->data[i][j].red * 0.272 + img->data[i][j].green * 0.534 + img->data[i][j].blue * 0.131);
+
+            // Clamp RGB values to the [0, 255] range
+            if (R > 255) R = 255;
+            if (G > 255) G = 255;
+            if (B > 255) B = 255;
+
+            img->data[i][j].red   = R;
+            img->data[i][j].green = G;
+            img->data[i][j].blue  = B;
+        }
+    }
 }
 
 // ========================================

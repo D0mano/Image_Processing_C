@@ -297,6 +297,22 @@ void bmp24_grayscale(t_bmp24 *img);
  */
 void bmp24_brightness(t_bmp24 *img, int value);
 
+/**
+ * @brief Flip the image horizontally
+ * @param img Pointer to the image to modify
+ *
+ * Convert an image into its horizontal mirrored versions
+ */
+void bmp24_horizontalFlip(t_bmp24 *img);
+
+/**
+ * @brief Flip the image vertically
+ * @param img Pointer to the image to modify
+ *
+ * Convert an image into its vertical mirrored versions
+ */
+void bmp24_verticalFlip(t_bmp24 *img);
+
 /* ============================================================================
  * CONVOLUTION AND KERNEL FUNCTIONS
  * ============================================================================ */
@@ -385,6 +401,15 @@ void bmp24_emboss(t_bmp24 *img);
  * Applies sharpening filter to enhance image details and edges.
  */
 void bmp24_sharpen(t_bmp24 *img);
+
+/**
+ * @brief Apply a sepia tone filter to image
+ * @param img Pointer to image to modify
+ *
+ * Applies sepia tone to give a vintage look to an image.
+ */
+void bmp24_sepia(t_bmp24 *img);
+
 
 /* ============================================================================
  * COLOR SPACE CONVERSION AND HISTOGRAM FUNCTIONS

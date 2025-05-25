@@ -146,12 +146,40 @@ void bmp8_threshold(t_bmp8 * img, int threshold)
     }
 }
 
+void bmp8_horizontalFlip(t_bmp8 *img)
+{
+    unsigned char * temp = malloc(img->width * img->height * sizeof(unsigned char));
+    for (int i = 0; i < img->width * img->height; i++)
+        temp[i] = img->data[i];
+    for (int i = 0; i < img->height ; i++)
+        for (int j = 0; j < img->width; j++)
+        {
+            img->data[i*img->width + j] = temp[(img->height - i - 1)*img->width + j];
+        }
+    free(temp);
+}
+
+void bmp8_verticalFlip(t_bmp8 *img)
+{
+    unsigned char * temp = malloc(img->width * img->height * sizeof(unsigned char));
+    for (int i = 0; i < img->width * img->height; i++)
+        temp[i] = img->data[i];
+    for (int i = 0; i < img->height ; i++)
+        for (int j = 0; j < img->width; j++)
+        {
+            img->data[i*img->width + j] = temp[i*img->width + (img->width - j - 1)];
+        }
+    free(temp);
+}
+
+
+
+
 
 int** list_to_matrix(t_bmp8 *img)
 {
-    // BUG: Should allocate img->height rows, not img->width
-    int **matrix = (int**)malloc(img->width * sizeof(int*));
-    for (int i = 0; i < img->width * img->height; i++)  // This loop condition is incorrect
+    int **matrix = (int**)malloc(img->height * sizeof(int*));
+    for (int i = 0; i < img->height; i++)
     {
         matrix[i] = (int*)malloc(img->width * sizeof(int));
         for (int j = 0; j < img->width; j++)

@@ -107,6 +107,23 @@ void bmp8_brightness(t_bmp8 *img, int value);
  */
 void bmp8_threshold(t_bmp8 *img, int threshold);
 
+/**
+ * @brief Flip the image horizontally
+ * @param img Pointer to the image to modify
+ *
+ * Convert an image into its horizontal mirrored versions
+ */
+void bmp8_horizontalFlip(t_bmp8 *img);
+
+/**
+ * @brief Flip the image vertically
+ * @param img Pointer to the image to modify
+ *
+ * Convert an image into its vertical mirrored versions
+ */
+void bmp8_verticalFlip(t_bmp8 *img);
+
+
 /* ============================================================================
  * CONVOLUTION AND FILTER FUNCTIONS
  * ============================================================================ */
